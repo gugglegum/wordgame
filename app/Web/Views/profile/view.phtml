@@ -1,0 +1,16 @@
+<?php
+
+use \App\I18n\Profile;
+
+/** @var bool $isOwnerUser */
+
+$title = Profile::profile_page_title(['username' => $user->username]);
+$this->layout('layouts/main-page', [
+    'title' => $title,
+])
+?>
+<h1><?= $this->e($title) ?></h1>
+
+<form action="<?= $this->e($this->urlFromRoute('game.create')) ?>" method="post">
+    <button type="submit">Создать игру</button>
+</form>

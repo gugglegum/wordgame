@@ -1,0 +1,38 @@
+<?php
+
+use App\I18n\Auth;
+
+/** @var string $username */
+/** @var string $password */
+/** @var string $passwordAgain */
+/** @var string $email */
+/** @var string[][] $errors */
+
+$title = Auth::register_page_title();
+$this->layout('layouts/main-page', [
+    'title' => $title,
+])
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<form action="" method="post">
+    <p><label for="username_input"><?= $this->e(Auth::username_label()) ?>: </label><input id="username_input" type="text" name="username" value="<?= $this->e($username) ?>"></p>
+<?php if (!empty($errors['username'])) { ?>
+    <div class="form-field-error"><?= $this->e($errors['username'][0]) ?></div>
+<?php } ?>
+    <p><label for="password_input"><?= $this->e(Auth::password_label()) ?>: </label><input id="password_input" type="password" name="password" value="<?= $this->e($password) ?>"></p>
+<?php if (!empty($errors['password'])) { ?>
+    <div class="form-field-error"><?= $this->e($errors['password'][0]) ?></div>
+<?php } ?>
+    <p><label for="password_again_input"><?= $this->e(Auth::password_again_label()) ?>: </label><input id="password_again_input" type="password" name="password_again" value="<?= $this->e($passwordAgain) ?>"></p>
+<?php if (!empty($errors['password_again'])) { ?>
+    <div class="form-field-error"><?= $this->e($errors['password_again'][0]) ?></div>
+<?php } ?>
+    <p><label for="email_input">E-mail: </label><input id="email_input" type="text" name="email" value="<?= $this->e($email) ?>"></p>
+    <?php if (!empty($errors['email'])) { ?>
+        <div class="form-field-error"><?= $this->e($errors['email'][0]) ?></div>
+    <?php } ?>
+    <p><input type="submit" name="" value="<?= $this->e(Auth::register_button()) ?>">
+        | <a href="<?= $this->e($this->urlFromRoute('auth.login')) ?>"><?= $this->e(Auth::login_link()) ?></a></p>
+</form>

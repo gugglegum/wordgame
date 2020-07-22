@@ -1,0 +1,45 @@
+<?php
+
+/** @var \App\DataSource\Game\GameRecord $game */
+///** @var \App\DataSource\User\UserRecord[] $players */
+/** @var bool $isJoined */
+/** @var int $loggedUserId */
+$title = 'Игра «' . $game->code . '»';
+$this->layout('layouts/main-page', [
+    'title' => $title,
+])
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<h2>Присоединившиеся игроки</h2>
+<ol id="joined-players">
+</ol>
+
+<?php if (!$isJoined) { ?>
+<form action="<?= $this->e($this->urlFromRoute('game.join', ['gameCode' => $game->code])) ?>" method="post">
+    <button type="submit">Присоединиться к игре</button>
+</form>
+<?php } else { ?>
+<p>Вы присоединились к игре</p>
+<form action="<?= $this->e($this->urlFromRoute('game.leave', ['gameCode' => $game->code])) ?>" method="post">
+    <button type="submit">Покинуть игру</button>
+</form>
+<?php } ?>
+
+<p>
+    <input id="game_text_input" type="text" autocomplete="off" disabled />
+    <button id="game_submit_button" disabled>Отправить</button>
+</p>
+<div id="game-log">
+
+</div>
+
+<script>
+var game = new Game({
+    "loggedUserId": <?= (int) $loggedUserId ?>,
+    "eventsUrl": '<?= $this->e(addslashes($this->urlFromRoute('game.ajax.events', ['gameCode' => $game->code]))) ?>',
+    "submitWordUrl": '<?= $this->e(addslashes($this->urlFromRoute('game.ajax.word-submit', ['gameCode' => $game->code]))) ?>'
+});
+game.init();
+</script>

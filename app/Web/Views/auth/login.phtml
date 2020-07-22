@@ -1,0 +1,35 @@
+<?php
+
+use App\I18n\Auth;
+
+/** @var string $username */
+/** @var string $password */
+/** @var string|null $error */
+/** @var null|\App\DataSource\User\UserRecord $loggedUser */
+/** @var string $csrfToken */
+
+$title = Auth::login_page_title();
+$this->layout('layouts/main-page', [
+    'title' => $title,
+]);
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<?php if (!$loggedUser) { ?>
+<form action="" method="post">
+<?php if ($error !== null) { ?>
+    <div class="form-field-error"><?= $this->e($error) ?></div>
+<?php } ?>
+    <p><label for="username_input"><?= $this->e(Auth::username_label()) ?>: </label><input id="username_input" type="text" name="username" value="<?= $this->e($username) ?>"></p>
+    <p><label for="password_input"><?= $this->e(Auth::password_label()) ?>: </label><input id="password_input" type="password" name="password" value="<?= $this->e($password) ?>"></p>
+    <p><input type="submit" name="" value="<?= $this->e(Auth::login_button()) ?>">
+        | <a href="<?= $this->e($this->urlFromRoute('auth.register')) ?>"><?= $this->e(Auth::register_link()) ?></a></p>
+</form>
+<?php } else { ?>
+<p><?= $this->e(Auth::already_logged_please_logout(['username' => $loggedUser->username])) ?></p>
+<form action="<?= $this->e($this->urlFromRoute('auth.logout')) ?>" method="post">
+    <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
+    <p><input type="submit" name="" value="<?= $this->e(Auth::logout_button()) ?>"></p>
+</form>
+<?php } ?>

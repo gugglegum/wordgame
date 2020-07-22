@@ -1,0 +1,29 @@
+body {
+    font: normal 14px 'Verdana', sans-serif;
+}
+#contents {
+    max-width: 100em;
+    margin: auto;
+}
+#joined-players li {
+    padding: 0.25em 0.5em;
+}
+#joined-players li span {
+    padding: 0.25em 0.5em;
+}
+#joined-players .leaved {
+    color: #ccc;
+}
+#joined-players .current {
+    background-color: #99c;
+    color: #fff;
+}
+input#game_text_input {
+    width: 15em;
+}
+#game-log .player {
+    color: #00c;
+}
+#game-log .word {
+    font-size: 200%;
+}

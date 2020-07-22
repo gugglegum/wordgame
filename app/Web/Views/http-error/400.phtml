@@ -1,0 +1,13 @@
+<?php
+
+/** @var string $details */
+
+$title = '400 Bad Request';
+$this->layout('layouts/main-page', [
+    'title' => $title,
+])
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<p>Your request contains an error<?= !empty($details) ? ': ' . $this->e($details) : '' ?>.</p>

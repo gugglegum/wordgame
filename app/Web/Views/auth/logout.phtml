@@ -1,0 +1,19 @@
+<?php
+
+use \App\I18n\Auth;
+
+/** @var string $csrfToken */
+
+$title = Auth::logout_page_title();
+$this->layout('layouts/main-page', [
+    'title' => $title,
+])
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<p><?= $this->e(Auth::really_logout()) ?></p>
+<form action="" method="post">
+    <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
+    <p><input type="submit" name="" value="<?= $this->e(Auth::logout_button()) ?>"></p>
+</form>
