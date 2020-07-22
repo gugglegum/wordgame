@@ -60,8 +60,8 @@ class EventTable extends Table
     2 => '\'leave\'',
   ),
 ),
-        'player_id' => array (
-  'name' => 'player_id',
+        'user_id' => array (
+  'name' => 'user_id',
   'type' => 'int unsigned',
   'size' => 10,
   'scale' => 0,
@@ -88,7 +88,7 @@ class EventTable extends Table
         'id',
         'game_id',
         'type',
-        'player_id',
+        'user_id',
         'word',
     ];
 
@@ -96,7 +96,7 @@ class EventTable extends Table
         'id' => null,
         'game_id' => null,
         'type' => null,
-        'player_id' => 0,
+        'user_id' => 0,
         'word' => 'NULL',
     ];
 

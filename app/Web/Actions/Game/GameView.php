@@ -28,7 +28,7 @@ class GameView extends AbstractAction
                 'game' => $game,
 //                'players' => $players,
                 'loggedUserId' => $loggedUserId,
-                'isJoined' => $gameService->isPlayerInGame($loggedUserId, $game->id),
+                'isJoined' => $gameService->isUserInGame($loggedUserId, $game->id),
             ])
         );
     }

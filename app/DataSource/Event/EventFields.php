@@ -10,7 +10,7 @@ namespace App\DataSource\Event;
  * @property mixed $id int(10,0) unsigned NOT NULL
  * @property mixed $game_id int(10,0) unsigned NOT NULL
  * @property mixed $type enum(5) NOT NULL
- * @property mixed $player_id int(10,0) unsigned
+ * @property mixed $user_id int(10,0) unsigned
  * @property mixed $word varchar(50)
  */
 trait EventFields

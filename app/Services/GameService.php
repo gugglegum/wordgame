@@ -39,49 +39,49 @@ class GameService
     }
 
     /**
-     * @param int $playerId
+     * @param int $userId
      * @return GameRecord
      * @throws Exception
      */
-    public function createGame(int $playerId): GameRecord
+    public function createGame(int $userId): GameRecord
     {
         $gameCode = $this->generateUniqueGameCode();
         /** @var GameRecord $game */
         $game = $this->atlas->newRecord(Game::class, [
             'code' => $gameCode,
-            'creator_id' => $playerId,
+            'creator_id' => $userId,
         ]);
         $this->atlas->insert($game);
-        $this->joinPlayerToGame($playerId, (int) $game->id);
+        $this->joinUserToGame($userId, (int) $game->id);
         return $game;
     }
 
     /**
-     * @param int $playerId
+     * @param int $userId
      * @param int $gameId
      */
-    public function joinPlayerToGame(int $playerId, int $gameId)
+    public function joinUserToGame(int $userId, int $gameId)
     {
         $pdo = $this->atlas->mapper(Player::class)->getTable()->getReadConnection()->getPdo();
-        $stmt = $pdo->prepare('INSERT INTO ' . PlayerTable::NAME . ' (`game_id`, `player_id`, `active`) VALUES (:gameId, :playerId, 1) ON DUPLICATE KEY UPDATE `active` = 1');
+        $stmt = $pdo->prepare('INSERT INTO ' . PlayerTable::NAME . ' (`game_id`, `user_id`, `active`) VALUES (:gameId, :userId, 1) ON DUPLICATE KEY UPDATE `active` = 1');
         $stmt->execute([
             ':gameId' => $gameId,
-            ':playerId' => $playerId,
+            ':userId' => $userId,
         ]);
-        $this->addEventToGame('join', null, $playerId, $gameId);
+        $this->addEventToGame('join', null, $userId, $gameId);
     }
 
     /**
-     * @param int $playerId
+     * @param int $userId
      * @param int $gameId
      */
-    public function leavePlayerFromGame(int $playerId, int $gameId)
+    public function leaveUserFromGame(int $userId, int $gameId)
     {
         $this->atlas->mapper(Player::class)->getTable()->update()->set('active', 0)
-            ->where('player_id = ', $playerId)
+            ->where('user_id = ', $userId)
             ->where('game_id = ', $gameId)
             ->perform();
-        $this->addEventToGame('leave', null, $playerId, $gameId);
+        $this->addEventToGame('leave', null, $userId, $gameId);
     }
 
     /**
@@ -89,10 +89,10 @@ class GameService
      * @param bool $activeOnly
      * @return array
      */
-    public function getGamePlayerIds(int $gameId, $activeOnly = false): array
+    public function getGameUserIds(int $gameId, $activeOnly = false): array
     {
         $query = $this->atlas->select(Player::class)
-            ->columns('player_id')
+            ->columns('user_id')
             ->where('game_id = ', $gameId)
             ->orderBy('id');
         if ($activeOnly) {
@@ -105,27 +105,27 @@ class GameService
      * @param int $gameId
      * @return UserRecord[]
      */
-    public function getGamePlayers(int $gameId): array
+    public function getGameUsers(int $gameId): array
     {
-        $gamePlayerIds = $this->getGamePlayerIds($gameId);
+        $gameUserIds = $this->getGameUserIds($gameId);
 
-        /** @var UserRecord[] $players */
-        $players = $this->atlas->select(User::class)
+        /** @var UserRecord[] $users */
+        $users = $this->atlas->select(User::class)
             ->columns('id, username')
-            ->where('id IN ', $gamePlayerIds)
+            ->where('id IN ', $gameUserIds)
             ->fetchRecords();
 
-        $playersMap = [];
-        foreach ($players as $player) {
-            $playersMap[$player->id] = $player;
+        $usersMap = [];
+        foreach ($users as $user) {
+            $usersMap[$user->id] = $user;
         }
 
-        $playersSorted = [];
-        foreach ($gamePlayerIds as $gamePlayerId) {
-            $playersSorted[] = $playersMap[$gamePlayerId];
+        $usersSorted = [];
+        foreach ($gameUserIds as $gameUserId) {
+            $usersSorted[] = $usersMap[$gameUserId];
         }
 
-        return $playersSorted;
+        return $usersSorted;
     }
 
     /**
@@ -152,27 +152,27 @@ class GameService
      * @param int $gameId
      * @return int
      */
-    public function getCurrentPlayerId(int $gameId): int
+    public function getCurrentUserId(int $gameId): int
     {
-        $gamePlayerIds = $this->getGamePlayerIds($gameId, true);
+        $gameUserIds = $this->getGameUserIds($gameId, true);
         $lastEvent = $this->getLastEvent($gameId, 'move');
         if ($lastEvent instanceof EventRecord) {
-            $index = array_search($lastEvent->player_id, $gamePlayerIds);
-            return $gamePlayerIds[($index + 1) % count($gamePlayerIds)];
+            $index = array_search($lastEvent->user_id, $gameUserIds);
+            return $gameUserIds[($index + 1) % count($gameUserIds)];
         } else {
-            return $gamePlayerIds[0];
+            return $gameUserIds[0];
         }
     }
 
     /**
-     * @param int $playerId
+     * @param int $userId
      * @param int $gameId
      * @return bool
      */
-    public function isPlayerInGame(int $playerId, int $gameId): bool
+    public function isUserInGame(int $userId, int $gameId): bool
     {
         return (bool) $this->atlas->select(Player::class)
-            ->where('player_id = ', $playerId)
+            ->where('user_id = ', $userId)
             ->where('game_id = ', $gameId)
             ->where('active != ', 0)
             ->fetchCount();
@@ -181,15 +181,15 @@ class GameService
     /**
      * @param string $type
      * @param string|null $word
-     * @param int $playerId
+     * @param int $userId
      * @param int $gameId
      */
-    public function addEventToGame(string $type, ?string $word, int $playerId, int $gameId)
+    public function addEventToGame(string $type, ?string $word, int $userId, int $gameId)
     {
         $event = $this->atlas->newRecord(Event::class, [
             'game_id' => $gameId,
             'type' => $type,
-            'player_id' => $playerId,
+            'user_id' => $userId,
             'word' => $word,
         ]);
         $this->atlas->insert($event);

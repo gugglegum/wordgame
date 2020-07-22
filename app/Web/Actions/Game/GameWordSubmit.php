@@ -23,7 +23,7 @@ class GameWordSubmit extends AbstractAction
         $word = trim($request->getParsedBody()['word']);
         $game = $this->getRequestedGame($request);
         $gameService = new GameService($this->resources->getAtlas());
-        if ($gameService->getCurrentPlayerId($game->id) != $loggedUserId) {
+        if ($gameService->getCurrentUserId($game->id) != $loggedUserId) {
             return new Response\JsonResponse([
                 'error' => 'Сейчас не ваш ход',
             ]);

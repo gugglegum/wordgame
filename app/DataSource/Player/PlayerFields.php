@@ -9,7 +9,7 @@ namespace App\DataSource\Player;
 /**
  * @property mixed $id int(10,0) unsigned NOT NULL
  * @property mixed $game_id int(10,0) unsigned NOT NULL
- * @property mixed $player_id int(10,0) unsigned NOT NULL
+ * @property mixed $user_id int(10,0) unsigned NOT NULL
  * @property mixed $active tinyint(3,0) NOT NULL
  */
 trait PlayerFields

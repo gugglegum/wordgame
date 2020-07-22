@@ -5,23 +5,23 @@ body {
     max-width: 100em;
     margin: auto;
 }
-#joined-players li {
+#joined-users li {
     padding: 0.25em 0.5em;
 }
-#joined-players li span {
+#joined-users li span {
     padding: 0.25em 0.5em;
 }
-#joined-players .leaved {
+#joined-users .leaved {
     color: #ccc;
 }
-#joined-players .current {
+#joined-users .current {
     background-color: #99c;
     color: #fff;
 }
 input#game_text_input {
     width: 15em;
 }
-#game-log .player {
+#game-log .user {
     color: #00c;
 }
 #game-log .word {

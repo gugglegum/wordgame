@@ -11,7 +11,7 @@ use Atlas\Table\Row;
 /**
  * @property mixed $id int(10,0) unsigned NOT NULL
  * @property mixed $game_id int(10,0) unsigned NOT NULL
- * @property mixed $player_id int(10,0) unsigned NOT NULL
+ * @property mixed $user_id int(10,0) unsigned NOT NULL
  * @property mixed $active tinyint(3,0) NOT NULL
  */
 class PlayerRow extends Row
@@ -19,7 +19,7 @@ class PlayerRow extends Row
     protected $cols = [
         'id' => null,
         'game_id' => null,
-        'player_id' => null,
+        'user_id' => null,
         'active' => null,
     ];
 }

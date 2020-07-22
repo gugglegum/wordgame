@@ -1,7 +1,6 @@
 <?php
 
 /** @var \App\DataSource\Game\GameRecord $game */
-///** @var \App\DataSource\User\UserRecord[] $players */
 /** @var bool $isJoined */
 /** @var int $loggedUserId */
 $title = 'Игра «' . $game->code . '»';
@@ -13,7 +12,7 @@ $this->layout('layouts/main-page', [
 <h1><?= $this->e($title) ?></h1>
 
 <h2>Присоединившиеся игроки</h2>
-<ol id="joined-players">
+<ol id="joined-users">
 </ol>
 
 <?php if (!$isJoined) { ?>

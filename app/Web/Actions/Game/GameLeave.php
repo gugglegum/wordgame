@@ -21,7 +21,7 @@ class GameLeave extends AbstractAction
         $userId = $this->getLoggedUserId($request);
         $game = $this->getRequestedGame($request);
         $gameService = new GameService($this->resources->getAtlas());
-        $gameService->leavePlayerFromGame($userId, $game->id);
+        $gameService->leaveUserFromGame($userId, $game->id);
 
         return new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('game.view', [
             'gameCode' => $game->code,

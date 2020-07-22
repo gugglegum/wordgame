@@ -21,7 +21,7 @@ class GameJoin extends AbstractAction
         $userId = $this->getLoggedUserId($request);
         $game = $this->getRequestedGame($request);
         $gameService = new GameService($this->resources->getAtlas());
-        $gameService->joinPlayerToGame($userId, $game->id);
+        $gameService->joinUserToGame($userId, $game->id);
 
         return new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('game.view', [
             'gameCode' => $game->code,

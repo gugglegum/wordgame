@@ -21,7 +21,7 @@ class GameEvents extends AbstractAction
     {
         $game = $this->getRequestedGame($request);
         $gameService = new GameService($this->resources->getAtlas());
-        $data = ['events' => [], 'players' => [], 'currentPlayerId' => null];
+        $data = ['events' => [], 'users' => [], 'currentUserId' => null];
 
         $queryParams = $request->getQueryParams();
         $afterId = array_key_exists('after', $queryParams) ? (int) $queryParams['after'] : null;
@@ -37,21 +37,21 @@ class GameEvents extends AbstractAction
                 $data['events'][] = [
                     'id' => $event->id,
                     'type' => $event->type,
-                    'playerId' => $event->player_id,
+                    'userId' => $event->user_id,
                     'word' => $event->word,
                 ];
             }
             break;
         } while (true);
 
-        $players = $gameService->getGamePlayers($game->id);
-        foreach ($players as $player) {
-            $data['players'][$player->id] = [
-                'id' => $player->id,
-                'username' => $player->username,
+        $users = $gameService->getGameUsers($game->id);
+        foreach ($users as $user) {
+            $data['users'][$user->id] = [
+                'id' => $user->id,
+                'username' => $user->username,
             ];
         }
-        $data['currentPlayerId'] = $gameService->getCurrentPlayerId($game->id);
+        $data['currentUserId'] = $gameService->getCurrentUserId($game->id);
 
         return new Response\JsonResponse($data);
     }

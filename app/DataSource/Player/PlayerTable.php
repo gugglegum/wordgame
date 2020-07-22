@@ -44,8 +44,8 @@ class PlayerTable extends Table
   'primary' => false,
   'options' => NULL,
 ),
-        'player_id' => array (
-  'name' => 'player_id',
+        'user_id' => array (
+  'name' => 'user_id',
   'type' => 'int unsigned',
   'size' => 10,
   'scale' => 0,
@@ -71,14 +71,14 @@ class PlayerTable extends Table
     const COLUMN_NAMES = [
         'id',
         'game_id',
-        'player_id',
+        'user_id',
         'active',
     ];
 
     const COLUMN_DEFAULTS = [
         'id' => null,
         'game_id' => null,
-        'player_id' => null,
+        'user_id' => null,
         'active' => null,
     ];
 

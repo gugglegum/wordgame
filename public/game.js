@@ -1,6 +1,6 @@
 class Game {
     config;
-    players = [];
+    users = [];
     lastEventId = 0;
 
     constructor(config) {
@@ -10,13 +10,11 @@ class Game {
     init() {
         let _this = this;
         $('#game_submit_button').click($.proxy(this.onWordSendAttempt, this));
-        // $('#game_text_input').bind('enterKey', $.proxy(this.onWordSendAttempt, this));
         $('#game_text_input').keyup('enterKey', function(e) {
             if (e.keyCode == 13) {
                 _this.onWordSendAttempt();
             }
         });
-
         $.getJSON(this.config.eventsUrl).done($.proxy(this.onAjaxGetEvents, this));
     }
 
@@ -38,19 +36,19 @@ class Game {
     }
 
     onAjaxGetEvents(data) {
-        this.players = data.players;
+        this.users = data.users;
         for (let i = 0; i < data.events.length; i++) {
             this.handleGameEvent(data.events[i]);
         }
-        if (data.currentPlayerId === this.config.loggedUserId) {
+        if (data.currentUserId === this.config.loggedUserId) {
             this.enableWordInput(true);
         } else {
-            this.disableWordInput(data.currentPlayerId);
+            this.disableWordInput(data.currentUserId);
         }
 
-        let playersList = $('#joined-players');
-        playersList.find('li > span').removeClass('current');
-        playersList.find('li#player-id-' + data.currentPlayerId + ' > span').addClass('current');
+        let usersList = $('#joined-users');
+        usersList.find('li > span').removeClass('current');
+        usersList.find('li#user-id-' + data.currentUserId + ' > span').addClass('current');
 
         let _this = this;
         setTimeout(function() {
@@ -61,21 +59,21 @@ class Game {
     handleGameEvent(event) {
         if (event.type === 'move') {
             let gameLog = $('#game-log');
-            gameLog.prepend("<p>Пользователь <span class=\"player\">" + this.players[event.playerId].username + "</span> ввёл слово <span class=\"word\">" + event.word + "</span></p>");
+            gameLog.prepend("<p>Пользователь <span class=\"user\">" + this.users[event.userId].username + "</span> ввёл слово <span class=\"word\">" + event.word + "</span></p>");
         }
         if (event.type === 'join') {
-            let playersList = $('#joined-players');
-            let item = playersList.find('li#player-id-' + event.playerId);
+            let usersList = $('#joined-users');
+            let item = usersList.find('li#user-id-' + event.userId);
             if (item.length === 0) {
-                item = $('<li>').attr('id', 'player-id-' + event.playerId).append($('<span>').text(this.players[event.playerId].username));
-                playersList.append(item);
+                item = $('<li>').attr('id', 'user-id-' + event.userId).append($('<span>').text(this.users[event.userId].username));
+                usersList.append(item);
             } else {
-                playersList.find('li#player-id-' + event.playerId).removeClass('leaved');
+                usersList.find('li#user-id-' + event.userId).removeClass('leaved');
             }
         }
         if (event.type === 'leave') {
-            let playersList = $('#joined-players');
-            playersList.find('li#player-id-' + event.playerId).addClass('leaved');
+            let usersList = $('#joined-users');
+            usersList.find('li#user-id-' + event.userId).addClass('leaved');
         }
         this.lastEventId = event.id;
     }
@@ -89,12 +87,11 @@ class Game {
         $('#game_submit_button').prop('disabled', false);
     }
 
-    disableWordInput(currentPlayerId) {
-        // let text = currentPlayerId !== -1 ? "Ход " + this.players[currentPlayerId].username + '...' : 'Отправка...';
+    disableWordInput(currentUserId) {
         let input = $('#game_text_input');
         input.prop('disabled', true);
-        if (currentPlayerId !== -1) {
-            input.val('Ход ' + this.players[currentPlayerId].username + '...')
+        if (currentUserId !== -1) {
+            input.val('Ход ' + this.users[currentUserId].username + '...')
         }
         $('#game_submit_button').prop('disabled', true);
     }
