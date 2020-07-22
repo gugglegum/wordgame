@@ -4,22 +4,22 @@
  */
 declare(strict_types=1);
 
-namespace App\DataSource\GamesPlayer;
+namespace App\DataSource\Player;
 
 use Atlas\Table\Table;
 
 /**
- * @method GamesPlayerRow|null fetchRow($primaryVal)
- * @method GamesPlayerRow[] fetchRows(array $primaryVals)
- * @method GamesPlayerTableSelect select(array $whereEquals = [])
- * @method GamesPlayerRow newRow(array $cols = [])
- * @method GamesPlayerRow newSelectedRow(array $cols)
+ * @method PlayerRow|null fetchRow($primaryVal)
+ * @method PlayerRow[] fetchRows(array $primaryVals)
+ * @method PlayerTableSelect select(array $whereEquals = [])
+ * @method PlayerRow newRow(array $cols = [])
+ * @method PlayerRow newSelectedRow(array $cols)
  */
-class GamesPlayerTable extends Table
+class PlayerTable extends Table
 {
     const DRIVER = 'mysql';
 
-    const NAME = 'games_players';
+    const NAME = 'players';
 
     const COLUMNS = [
         'id' => array (

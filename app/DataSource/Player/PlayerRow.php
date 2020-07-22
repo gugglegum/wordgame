@@ -4,7 +4,9 @@
  */
 declare(strict_types=1);
 
-namespace App\DataSource\GamesPlayer;
+namespace App\DataSource\Player;
+
+use Atlas\Table\Row;
 
 /**
  * @property mixed $id int(10,0) unsigned NOT NULL
@@ -12,6 +14,12 @@ namespace App\DataSource\GamesPlayer;
  * @property mixed $player_id int(10,0) unsigned NOT NULL
  * @property mixed $active tinyint(3,0) NOT NULL
  */
-trait GamesPlayerFields
+class PlayerRow extends Row
 {
+    protected $cols = [
+        'id' => null,
+        'game_id' => null,
+        'player_id' => null,
+        'active' => null,
+    ];
 }

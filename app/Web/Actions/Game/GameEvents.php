@@ -39,7 +39,6 @@ class GameEvents extends AbstractAction
                     'type' => $event->type,
                     'playerId' => $event->player_id,
                     'word' => $event->word,
-                    'data' => $event->data,
                 ];
             }
             break;

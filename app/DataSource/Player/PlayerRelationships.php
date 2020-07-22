@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\DataSource\GamesPlayer;
+namespace App\DataSource\Player;
 
 use Atlas\Mapper\MapperRelationships;
 
-class GamesPlayerRelationships extends MapperRelationships
+class PlayerRelationships extends MapperRelationships
 {
     protected function define()
     {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\DataSource\GamesPlayer;
+namespace App\DataSource\Player;
 
 use Atlas\Mapper\Mapper;
 use Atlas\Mapper\MapperEvents;
@@ -11,6 +11,6 @@ use Atlas\Query\Insert;
 use Atlas\Query\Update;
 use PDOStatement;
 
-class GamesPlayerEvents extends MapperEvents
+class PlayerEvents extends MapperEvents
 {
 }

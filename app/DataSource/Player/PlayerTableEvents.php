@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\DataSource\GamesPlayer;
+namespace App\DataSource\Player;
 
 use Atlas\Query\Delete;
 use Atlas\Query\Insert;
@@ -12,6 +12,6 @@ use Atlas\Table\Table;
 use Atlas\Table\TableEvents;
 use PDOStatement;
 
-class GamesPlayerTableEvents extends TableEvents
+class PlayerTableEvents extends TableEvents
 {
 }

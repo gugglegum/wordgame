@@ -8,13 +8,11 @@ use App\DataSource\Event\Event;
 use App\DataSource\Event\EventRecord;
 use App\DataSource\Game\Game;
 use App\DataSource\Game\GameRecord;
-use App\DataSource\GamesPlayer\GamesPlayer;
-use App\DataSource\GamesPlayer\GamesPlayerRecord;
-use App\DataSource\GamesPlayer\GamesPlayerTable;
+use App\DataSource\Player\Player;
+use App\DataSource\Player\PlayerTable;
 use App\DataSource\User\User;
 use App\DataSource\User\UserRecord;
 use App\Exceptions\Exception;
-use App\Web\Actions\Game\GameEvents;
 use Atlas\Orm\Atlas;
 
 class GameService
@@ -64,8 +62,8 @@ class GameService
      */
     public function joinPlayerToGame(int $playerId, int $gameId)
     {
-        $pdo = $this->atlas->mapper(GamesPlayer::class)->getTable()->getReadConnection()->getPdo();
-        $stmt = $pdo->prepare('INSERT INTO ' . GamesPlayerTable::NAME . ' (`game_id`, `player_id`, `active`) VALUES (:gameId, :playerId, 1) ON DUPLICATE KEY UPDATE `active` = 1');
+        $pdo = $this->atlas->mapper(Player::class)->getTable()->getReadConnection()->getPdo();
+        $stmt = $pdo->prepare('INSERT INTO ' . PlayerTable::NAME . ' (`game_id`, `player_id`, `active`) VALUES (:gameId, :playerId, 1) ON DUPLICATE KEY UPDATE `active` = 1');
         $stmt->execute([
             ':gameId' => $gameId,
             ':playerId' => $playerId,
@@ -79,7 +77,7 @@ class GameService
      */
     public function leavePlayerFromGame(int $playerId, int $gameId)
     {
-        $this->atlas->mapper(GamesPlayer::class)->getTable()->update()->set('active', 0)
+        $this->atlas->mapper(Player::class)->getTable()->update()->set('active', 0)
             ->where('player_id = ', $playerId)
             ->where('game_id = ', $gameId)
             ->perform();
@@ -93,7 +91,7 @@ class GameService
      */
     public function getGamePlayerIds(int $gameId, $activeOnly = false): array
     {
-        $query = $this->atlas->select(GamesPlayer::class)
+        $query = $this->atlas->select(Player::class)
             ->columns('player_id')
             ->where('game_id = ', $gameId)
             ->orderBy('id');
@@ -173,7 +171,7 @@ class GameService
      */
     public function isPlayerInGame(int $playerId, int $gameId): bool
     {
-        return (bool) $this->atlas->select(GamesPlayer::class)
+        return (bool) $this->atlas->select(Player::class)
             ->where('player_id = ', $playerId)
             ->where('game_id = ', $gameId)
             ->where('active != ', 0)
@@ -193,7 +191,6 @@ class GameService
             'type' => $type,
             'player_id' => $playerId,
             'word' => $word,
-            'data' => json_encode([]),
         ]);
         $this->atlas->insert($event);
     }
