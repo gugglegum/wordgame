@@ -9,6 +9,7 @@ use App\I18n\Auth;
 /** @var string[][] $errors */
 /** @var null|\App\DataSource\User\UserRecord $loggedUser */
 /** @var string $csrfToken */
+/** @var \Psr\Http\Message\ServerRequestInterface $request */
 
 $title = Auth::register_page_title();
 $this->layout('layouts/auth-layout', [
@@ -47,7 +48,8 @@ $this->layout('layouts/auth-layout', [
         <?php } ?>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->e(Auth::register_button()) ?></button>
-        <p class="mt-5 mb-3 text-muted"><a href="<?= $this->e($this->urlFromRoute('auth.login')) ?>"><?= $this->e(Auth::login_link()) ?></a></p>
+        <p class="mt-5 mb-3 text-muted"><a href="<?= $this->e($this->urlFromRoute('auth.login')
+                . (array_key_exists('redirect', $request->getQueryParams()) ? '?redirect=' . urlencode($request->getQueryParams()['redirect']) : '')) ?>"><?= $this->e(Auth::login_link()) ?></a></p>
     </form>
 <?php } else { ?>
     <p><?= $this->e(Auth::already_logged_please_logout(['username' => $loggedUser->username])) ?></p>

@@ -52,7 +52,8 @@ class RegisterAction extends AbstractAction
             if (count($errors) == 0) {
                 $userService = new UserService($this->resources->getAtlas());
                 $userService->createUser($formData['username'], $formData['password'], $formData['email']);
-                $response = new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('auth.login'));
+                $response = new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('auth.login')
+                    . (array_key_exists('redirect', $request->getQueryParams()) ? '?redirect=' . urlencode($request->getQueryParams()['redirect']) : ''));
                 return $response;
             }
         } else {

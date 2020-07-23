@@ -53,7 +53,7 @@ class AuthenticationMiddleware implements MiddlewareInterface
         if ($loggedUserId != 0) {
             $request = $request->withAttribute(self::LOGGED_USER_ID_ATTRIBUTE, $loggedUserId);
         } elseif (in_array($request->getAttribute('request-handler'), $this->needAuthHandlers)) {
-            return new RedirectResponse($this->loginUrl);
+            return new RedirectResponse($this->loginUrl . '?redirect=' . urlencode($request->getUri()->getPath()));
         }
 
         $response = $handler->handle($request);

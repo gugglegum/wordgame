@@ -58,6 +58,7 @@ class TemplateMiddleware implements MiddlewareInterface
         $this->resources->getTemplateEngine()->addData([
             'loggedUser' => $loggedUser,
             'csrfToken' => $csrfToken,
+            'request' => $request,
         ]);
         return $handler->handle($request);
     }

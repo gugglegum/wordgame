@@ -28,7 +28,10 @@ class LoginAction extends AbstractAction
             $userService = new UserService($this->resources->getAtlas());
             $user = $userService->authorizeUser($formData['username'], $formData['password']);
             if ($user instanceof UserRecord) {
-                $response = new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('profile', ['user' => $user->username]));
+                $redirectUrl = !array_key_exists('redirect', $request->getQueryParams())
+                    ? $this->resources->getWebRouter()->getGenerator()->generate('profile', ['user' => $user->username])
+                    : $request->getQueryParams()['redirect'];
+                $response = new Response\RedirectResponse($redirectUrl);
                 $response = $cookieAuthenticator->createSession($response, (int) $user->id);
                 return $response;
             } else {
