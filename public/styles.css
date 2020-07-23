@@ -22,3 +22,9 @@ h1, h2, h3, h4, h5, h6 {
 .user-games-list li .game-code {
     font-size: 150%;
 }
+.navbar a.nav-link {
+    color:#ccc;
+}
+.navbar a.nav-link:hover {
+    color:#fff;
+}
