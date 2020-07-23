@@ -1,29 +1,15 @@
 body {
-    font: normal 14px 'Verdana', sans-serif;
+    font: normal 14px sans-serif;
+}
+.navbar {
+    max-width: 80em;
+    margin: 0 auto;
+}
+.navbar-outer {
+    max-width: 100%;
 }
 #contents {
-    max-width: 100em;
-    margin: auto;
-}
-#joined-users li {
-    padding: 0.25em 0.5em;
-}
-#joined-users li span {
-    padding: 0.25em 0.5em;
-}
-#joined-users .leaved {
-    color: #ccc;
-}
-#joined-users .current {
-    background-color: #99c;
-    color: #fff;
-}
-input#game_text_input {
-    width: 15em;
-}
-#game-log .user {
-    color: #00c;
-}
-#game-log .word {
-    font-size: 200%;
+    max-width: 80em;
+    margin: 0 auto;
+    padding: 2em 1em;
 }

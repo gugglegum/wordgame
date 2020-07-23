@@ -7,32 +7,56 @@ use App\I18n\Auth;
 /** @var string $passwordAgain */
 /** @var string $email */
 /** @var string[][] $errors */
+/** @var null|\App\DataSource\User\UserRecord $loggedUser */
+/** @var string $csrfToken */
 
 $title = Auth::register_page_title();
-$this->layout('layouts/main-page', [
+$this->layout('layouts/auth-layout', [
     'title' => $title,
 ])
 ?>
 
-<h1><?= $this->e($title) ?></h1>
+<?php if (!$loggedUser) { ?>
+    <form class="form-auth form-register" action="" method="post">
+        <h1>Word Game</h1>
+        <img class="mb-4" src="/logo.png" alt="" width="150" height="150">
+        <h1 class="h3 mb-3 font-weight-normal"><?= $this->e($title) ?></h1>
 
-<form action="" method="post">
-    <p><label for="username_input"><?= $this->e(Auth::username_label()) ?>: </label><input id="username_input" type="text" name="username" value="<?= $this->e($username) ?>"></p>
-<?php if (!empty($errors['username'])) { ?>
-    <div class="form-field-error"><?= $this->e($errors['username'][0]) ?></div>
+        <label for="username_input" class="sr-only"><?= $this->e(Auth::username_label()) ?></label>
+        <input type="text" id="username_input" name="username" class="form-control" placeholder="<?= $this->e(Auth::username_label()) ?>" required autofocus value="<?= $this->e($username) ?>">
+        <?php if (!empty($errors['username'])) { ?>
+            <div class="form-field-error"><?= $this->e($errors['username'][0]) ?></div>
+        <?php } ?>
+
+        <label for="password_input" class="sr-only"><?= $this->e(Auth::password_label()) ?></label>
+        <input type="password" id="password_input" name="password" class="form-control" placeholder="<?= $this->e(Auth::password_label()) ?>" required value="<?= $this->e($password) ?>">
+        <?php if (!empty($errors['password'])) { ?>
+            <div class="form-field-error"><?= $this->e($errors['password'][0]) ?></div>
+        <?php } ?>
+
+        <label for="password_again_input" class="sr-only"><?= $this->e(Auth::password_again_label()) ?></label>
+        <input type="password" id="password_again_input" name="password_again" class="form-control" placeholder="<?= $this->e(Auth::password_again_label()) ?>" required value="<?= $this->e($passwordAgain) ?>">
+        <?php if (!empty($errors['password_again'])) { ?>
+            <div class="form-field-error"><?= $this->e($errors['password_again'][0]) ?></div>
+        <?php } ?>
+
+        <label for="email_input" class="sr-only"><?= $this->e(Auth::username_label()) ?></label>
+        <input type="email" id="email_input" name="email" class="form-control" placeholder="Email" required value="<?= $this->e($email) ?>">
+        <?php if (!empty($errors['email'])) { ?>
+            <div class="form-field-error"><?= $this->e($errors['email'][0]) ?></div>
+        <?php } ?>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->e(Auth::register_button()) ?></button>
+        <p class="mt-5 mb-3 text-muted"><a href="<?= $this->e($this->urlFromRoute('auth.login')) ?>"><?= $this->e(Auth::login_link()) ?></a></p>
+    </form>
+<?php } else { ?>
+    <p><?= $this->e(Auth::already_logged_please_logout(['username' => $loggedUser->username])) ?></p>
+    <form action="<?= $this->e($this->urlFromRoute('auth.logout')) ?>" method="post">
+        <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
+        <p><input type="submit" name="" value="<?= $this->e(Auth::logout_button()) ?>"></p>
+    </form>
+    <p class="mt-5 mb-3 text-muted">
+        <a href="<?= $this->e($this->urlFromRoute('start')) ?>"><?= $this->e(Auth::main_page_link()) ?></a> |
+        <a href="<?= $this->e($this->urlFromRoute('profile', ['user' => $loggedUser->username])) ?>"><?= $this->e(Auth::profile_page_link()) ?></a>
+    </p>
 <?php } ?>
-    <p><label for="password_input"><?= $this->e(Auth::password_label()) ?>: </label><input id="password_input" type="password" name="password" value="<?= $this->e($password) ?>"></p>
-<?php if (!empty($errors['password'])) { ?>
-    <div class="form-field-error"><?= $this->e($errors['password'][0]) ?></div>
-<?php } ?>
-    <p><label for="password_again_input"><?= $this->e(Auth::password_again_label()) ?>: </label><input id="password_again_input" type="password" name="password_again" value="<?= $this->e($passwordAgain) ?>"></p>
-<?php if (!empty($errors['password_again'])) { ?>
-    <div class="form-field-error"><?= $this->e($errors['password_again'][0]) ?></div>
-<?php } ?>
-    <p><label for="email_input">E-mail: </label><input id="email_input" type="text" name="email" value="<?= $this->e($email) ?>"></p>
-    <?php if (!empty($errors['email'])) { ?>
-        <div class="form-field-error"><?= $this->e($errors['email'][0]) ?></div>
-    <?php } ?>
-    <p><input type="submit" name="" value="<?= $this->e(Auth::register_button()) ?>">
-        | <a href="<?= $this->e($this->urlFromRoute('auth.login')) ?>"><?= $this->e(Auth::login_link()) ?></a></p>
-</form>

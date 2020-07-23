@@ -4,34 +4,43 @@
 /** @var bool $isJoined */
 /** @var int $loggedUserId */
 $title = 'Игра «' . $game->code . '»';
-$this->layout('layouts/main-page', [
+$this->layout('layouts/game-layout', [
     'title' => $title,
 ])
 ?>
 
-<h1><?= $this->e($title) ?></h1>
+<div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+        <h4>Присоединившиеся игроки</h4>
+        <ol id="joined-users">
+        </ol>
 
-<h2>Присоединившиеся игроки</h2>
-<ol id="joined-users">
-</ol>
+        <?php if (!$isJoined) { ?>
+        <form action="<?= $this->e($this->urlFromRoute('game.join', ['gameCode' => $game->code])) ?>" method="post">
+            <button type="submit" class="btn btn-success">Присоединиться к игре</button>
+        </form>
+        <?php } else { ?>
+        <p>Вы присоединились к игре</p>
+        <form action="<?= $this->e($this->urlFromRoute('game.leave', ['gameCode' => $game->code])) ?>" method="post">
+            <button type="submit" class="btn btn-outline-danger">Покинуть игру</button>
+        </form>
+        <?php } ?>
+    </div>
+    <div class="col-md-8 order-md-1">
+        <h1><?= $this->e($title) ?></h1>
+        <div class="form-inline">
+            <div class="form-group mb-2">
+                <label for="game_text_input" class="sr-only">Слово</label>
+                <input id="game_text_input" type="text" autocomplete="off" class="form-control" placeholder="слово" disabled />
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <button id="game_submit_button" disabled class="btn btn-primary">Отправить</button>
+            </div>
+        </div>
 
-<?php if (!$isJoined) { ?>
-<form action="<?= $this->e($this->urlFromRoute('game.join', ['gameCode' => $game->code])) ?>" method="post">
-    <button type="submit">Присоединиться к игре</button>
-</form>
-<?php } else { ?>
-<p>Вы присоединились к игре</p>
-<form action="<?= $this->e($this->urlFromRoute('game.leave', ['gameCode' => $game->code])) ?>" method="post">
-    <button type="submit">Покинуть игру</button>
-</form>
-<?php } ?>
-
-<p>
-    <input id="game_text_input" type="text" autocomplete="off" disabled />
-    <button id="game_submit_button" disabled>Отправить</button>
-</p>
-<div id="game-log">
-
+        <div id="game-log">
+        </div>
+    </div>
 </div>
 
 <script>

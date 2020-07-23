@@ -5,7 +5,7 @@ use \App\I18n\Profile;
 /** @var bool $isOwnerUser */
 
 $title = Profile::profile_page_title(['username' => $user->username]);
-$this->layout('layouts/main-page', [
+$this->layout('layouts/default-layout', [
     'title' => $title,
 ])
 ?>

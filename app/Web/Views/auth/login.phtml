@@ -9,27 +9,39 @@ use App\I18n\Auth;
 /** @var string $csrfToken */
 
 $title = Auth::login_page_title();
-$this->layout('layouts/main-page', [
+$this->layout('layouts/auth-layout', [
     'title' => $title,
 ]);
 ?>
 
-<h1><?= $this->e($title) ?></h1>
-
 <?php if (!$loggedUser) { ?>
-<form action="" method="post">
-<?php if ($error !== null) { ?>
-    <div class="form-field-error"><?= $this->e($error) ?></div>
-<?php } ?>
-    <p><label for="username_input"><?= $this->e(Auth::username_label()) ?>: </label><input id="username_input" type="text" name="username" value="<?= $this->e($username) ?>"></p>
-    <p><label for="password_input"><?= $this->e(Auth::password_label()) ?>: </label><input id="password_input" type="password" name="password" value="<?= $this->e($password) ?>"></p>
-    <p><input type="submit" name="" value="<?= $this->e(Auth::login_button()) ?>">
-        | <a href="<?= $this->e($this->urlFromRoute('auth.register')) ?>"><?= $this->e(Auth::register_link()) ?></a></p>
+<form class="form-auth form-login" action="" method="post">
+    <h1>Word Game</h1>
+    <img class="mb-4" src="/logo.png" alt="" width="150" height="150">
+    <h1 class="h3 mb-3 font-weight-normal"><?= $this->e($title) ?></h1>
+    <?php if ($error !== null) { ?>
+        <div class="form-field-error"><?= $this->e($error) ?></div>
+    <?php } ?>
+    <label for="username_input" class="sr-only"><?= $this->e(Auth::username_label()) ?></label>
+    <input type="text" id="username_input" name="username" class="form-control" placeholder="<?= $this->e(Auth::username_label()) ?>" required autofocus value="<?= $this->e($username) ?>">
+    <label for="password_input" class="sr-only"><?= $this->e(Auth::password_label()) ?></label>
+    <input type="password" id="password_input" name="password" class="form-control" placeholder="<?= $this->e(Auth::password_label()) ?>" required value="<?= $this->e($password) ?>">
+    <!--div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->e(Auth::login_button()) ?></button>
+    <p class="mt-5 mb-3 text-muted"><a href="<?= $this->e($this->urlFromRoute('auth.register')) ?>"><?= $this->e(Auth::register_link()) ?></a></p>
 </form>
 <?php } else { ?>
-<p><?= $this->e(Auth::already_logged_please_logout(['username' => $loggedUser->username])) ?></p>
-<form action="<?= $this->e($this->urlFromRoute('auth.logout')) ?>" method="post">
-    <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
-    <p><input type="submit" name="" value="<?= $this->e(Auth::logout_button()) ?>"></p>
-</form>
+    <p><?= $this->e(Auth::already_logged_please_logout(['username' => $loggedUser->username])) ?></p>
+    <form action="<?= $this->e($this->urlFromRoute('auth.logout')) ?>" method="post">
+        <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
+        <p><input type="submit" name="" value="<?= $this->e(Auth::logout_button()) ?>"></p>
+    </form>
+    <p class="mt-5 mb-3 text-muted">
+        <a href="<?= $this->e($this->urlFromRoute('start')) ?>"><?= $this->e(Auth::main_page_link()) ?></a> |
+        <a href="<?= $this->e($this->urlFromRoute('profile', ['user' => $loggedUser->username])) ?>"><?= $this->e(Auth::profile_page_link()) ?></a>
+    </p>
 <?php } ?>

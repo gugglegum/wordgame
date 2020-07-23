@@ -22,6 +22,8 @@ use gugglegum\I18n\Translate\Translate;
  * @method static string register_button()
  * @method static string logout_page_title()
  * @method static string really_logout()
+ * @method static string main_page_link()
+ * @method static string profile_page_link()
  */
 class Auth extends Translate
 {

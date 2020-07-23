@@ -1,0 +1,110 @@
+<?php
+
+/** @var \App\DataSource\User\UserRecord $loggedUser */
+/** @var string $csrfToken */
+
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title><?= $this->e($title) ?></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/logo.png">
+    <link href="/bootstrap-4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <script src="/jquery-3.5.1.min.js"></script>
+    <script src="/bootstrap-4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!--<div class="fixed-top">-->
+<!--    <div class="collapse" id="navbarToggleExternalContent">-->
+<!--        <div class="bg-dark p-4">-->
+<!--            <h5 class="text-white h4">Collapsed content</h5>-->
+<!--            <span class="text-muted">Toggleable via the navbar brand.</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <nav class="navbar navbar-dark bg-dark">-->
+<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--    </nav>-->
+<!--</div>-->
+
+<div class="navbar-outer bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="<?= $this->e($this->urlFromRoute('start')) ?>">Word Game</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="--><?= /*$this->e($this->urlFromRoute('start'))*/ '' ?><!--">Home <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="#">Link</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item dropdown">-->
+<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    Dropdown-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                    <a class="dropdown-item" href="#">Action</a>-->
+<!--                    <a class="dropdown-item" href="#">Another action</a>-->
+<!--                    <div class="dropdown-divider"></div>-->
+<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--            </li>-->
+        </ul>
+<?php if ($loggedUser) { ?>
+        <a class="nav-link" href="<?= $this->e($this->urlFromRoute('profile', ['user' => $loggedUser->username])) ?>"><?= $this->e($loggedUser->username) ?></a>
+        <form class="form-inline my-2 my-lg-0" action="<?= $this->e($this->urlFromRoute('auth.logout')) ?>" method="post">
+            <div><input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>"></div>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выход</button>
+        </form>
+<?php } else { ?>
+    <a class="btn btn-primary my-2 my-sm-0" href="<?= $this->e($this->urlFromRoute('auth.login')) ?>">Вход</a>
+<?php } ?>
+    </div>
+</nav>
+</div>
+
+<!--<div class="wrap">-->
+<!--    <nav id="w0" class="navbar-inverse navbar-fixed-top navbar" role="navigation">-->
+<!--        <div class="container">-->
+<!--            <div class="navbar-header">-->
+<!--                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse">-->
+<!--                    <span class="sr-only">Toggle navigation</span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                </button>-->
+<!--                <a class="navbar-brand" href="/">Inventory</a></div>-->
+<!--            <div id="w0-collapse" class="collapse navbar-collapse">-->
+<!--                <ul id="w1" class="navbar-nav navbar-right nav">-->
+<!--                    <li><a href="/site/index">Home</a></li>-->
+<!--                    <li class="active"><a href="/items/index">Предметы</a></li>-->
+<!--                    <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Admin <b-->
+<!--                                    class="caret"></b></a>-->
+<!--                        <ul id="w2" class="dropdown-menu">-->
+<!--                            <li><a href="/users/index" tabindex="-1">Users</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li><a href="/site/logout" data-method="post">Logout (gugglegum)</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </nav>-->
+
+    <div id="contents">
+    <?= $this->section('content') ?>
+    </div>
+</div>
+</body>
+</html>

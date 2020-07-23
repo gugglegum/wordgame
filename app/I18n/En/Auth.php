@@ -15,12 +15,14 @@ class Auth extends EnglishLanguage
     protected static $password_again_label = 'Password again';
     protected static $login_button = 'Login';
     protected static $logout_button = 'Logout';
-    protected static $register_link = 'Register...';
-    protected static $login_link = 'Login...';
+    protected static $register_link = 'Register';
+    protected static $login_link = 'Login';
     protected static $register_page_title = 'Register';
     protected static $register_button = 'Register';
     protected static $logout_page_title = 'Logout';
     protected static $really_logout = 'Do you really want to logout?';
+    protected static $main_page_link = 'Main page';
+    protected static $profile_page_link = 'Profile';
 
 //    public static function login_page_title()
 //    {

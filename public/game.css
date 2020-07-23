@@ -1,0 +1,22 @@
+#joined-users li {
+    padding: 0.25em 0.5em;
+}
+#joined-users li span {
+    padding: 0.25em 0.5em;
+}
+#joined-users .leaved {
+    color: #ccc;
+}
+#joined-users .current {
+    background-color: #99c;
+    color: #fff;
+}
+input#game_text_input {
+    width: 15em;
+}
+#game-log .user {
+    color: #00c;
+}
+#game-log .word {
+    font-size: 200%;
+}

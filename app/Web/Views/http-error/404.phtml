@@ -1,0 +1,11 @@
+<?php
+
+$title = '404 Not Found';
+$this->layout('layouts/http-error-layout', [
+    'title' => $title,
+]);
+?>
+
+<h1><?= $this->e($title) ?></h1>
+
+<p>The object you are requesting is not found</p>

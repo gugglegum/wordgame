@@ -27,6 +27,11 @@ class ResourceManager
     private $atlas;
 
     /**
+     * @var \League\Plates\Engine
+     */
+    private $templateEngine;
+
+    /**
      * @return \Luracast\Config\Config
      */
     public function getConfig(): \Luracast\Config\Config
@@ -89,6 +94,7 @@ class ResourceManager
                     Web\Actions\Game\GameLeave::class,
                 ]
             ),
+            new Web\Middlewares\TemplateMiddleware($this),
             new Web\Middlewares\HttpErrorMiddleware($this->getTemplateEngine()),
             new Web\Middlewares\I18nMiddleware(),
             new \Middlewares\RequestHandler(new \Middlewares\Utils\RequestHandlerContainer([$this])),
@@ -156,9 +162,11 @@ class ResourceManager
      */
     public function getTemplateEngine(): \League\Plates\Engine
     {
-        $templateEngine = new \League\Plates\Engine(__DIR__ . '/web/views', 'phtml');
-        $templateEngine->loadExtension(new Web\Components\Plates\UrlFromRouteExtension($this->getWebRouter()));
-        return $templateEngine;
+        if ($this->templateEngine === null) {
+            $this->templateEngine = new \League\Plates\Engine(__DIR__ . '/Web/Views', 'phtml');
+            $this->templateEngine->loadExtension(new Web\Components\Plates\UrlFromRouteExtension($this->getWebRouter()));
+        }
+        return $this->templateEngine;
     }
 
     /**

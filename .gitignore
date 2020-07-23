@@ -1,6 +1,5 @@
 /.idea
 /.env
 /vendor
-/temp
 /create-data-source.cmd
 /config/skeleton-config.php

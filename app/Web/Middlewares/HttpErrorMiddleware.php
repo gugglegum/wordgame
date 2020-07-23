@@ -39,6 +39,13 @@ class HttpErrorMiddleware implements MiddlewareInterface
                     ]),
                     $e->getCode()
                 );
+            } elseif ($e->getCode() == 404) {
+                $response = new HtmlResponse(
+                    $this->templateEngine->render('http-error/404', [
+//                        'details' => $e->getMessage(),
+                    ]),
+                    $e->getCode()
+                );
             } else {
                 // Maybe Factory::createResponse(404); ?
                 $response = new HtmlResponse("<h1>HTTP {$e->getCode()}</h1>", $e->getCode());
