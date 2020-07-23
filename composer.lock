@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49fa66500087a5a4651f05425763b8eb",
+    "content-hash": "ec5b61f0b2716bfd8c96d28b6eac2df1",
     "packages": [
         {
             "name": "atlas/cli",
@@ -520,12 +520,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gugglegum/translate.git",
-                "reference": "10280c2c262bf58db8d10472e8640cfcaefe2243"
+                "reference": "014b8902bca6887e5615dd70f0326e6bdf02418f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gugglegum/translate/zipball/10280c2c262bf58db8d10472e8640cfcaefe2243",
-                "reference": "10280c2c262bf58db8d10472e8640cfcaefe2243",
+                "url": "https://api.github.com/repos/gugglegum/translate/zipball/014b8902bca6887e5615dd70f0326e6bdf02418f",
+                "reference": "014b8902bca6887e5615dd70f0326e6bdf02418f",
                 "shasum": ""
             },
             "require": {
@@ -556,7 +556,7 @@
                 "localization",
                 "translate"
             ],
-            "time": "2018-11-20T21:20:19+00:00"
+            "time": "2020-07-23T12:09:55+00:00"
         },
         {
             "name": "http-interop/http-server-middleware",
@@ -1549,7 +1549,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1",
+        "php": "^7.3",
         "ext-pdo": "*",
         "ext-mbstring": "*"
     },
