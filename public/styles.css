@@ -1,6 +1,9 @@
 body {
     font: normal 14px sans-serif;
 }
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+}
 .navbar {
     max-width: 80em;
     margin: 0 auto;
@@ -12,4 +15,10 @@ body {
     max-width: 80em;
     margin: 0 auto;
     padding: 2em 1em;
+}
+.user-games-list li {
+    margin: 1em 0;
+}
+.user-games-list li .game-code {
+    font-size: 150%;
 }

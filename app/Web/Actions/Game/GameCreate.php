@@ -16,8 +16,8 @@ class GameCreate extends AbstractAction
 
     public function __invoke(ServerRequest $request)
     {
-        $gameService = new GameService($this->resources->getAtlas());
         $userId = $this->getLoggedUserId($request);
+        $gameService = new GameService($this->resources->getAtlas());
         $game = $gameService->createGame($userId);
 
         return new Response\RedirectResponse($this->resources->getWebRouter()->getGenerator()->generate('game.view', [

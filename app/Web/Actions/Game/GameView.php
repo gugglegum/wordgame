@@ -22,11 +22,9 @@ class GameView extends AbstractAction
         $loggedUserId = $this->getLoggedUserId($request);
         $gameService = new GameService($this->resources->getAtlas());
         $game = $this->getRequestedGame($request);
-//        $players = $gameService->getGamePlayers($game->id);
         return new Response\HtmlResponse(
             $this->resources->getTemplateEngine()->render('game/view', [
                 'game' => $game,
-//                'players' => $players,
                 'loggedUserId' => $loggedUserId,
                 'isJoined' => $gameService->isUserInGame($loggedUserId, $game->id),
             ])

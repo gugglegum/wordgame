@@ -86,19 +86,46 @@ class GameService
 
     /**
      * @param int $gameId
-     * @param bool $activeOnly
+     * @param bool|null $active
      * @return array
      */
-    public function getGameUserIds(int $gameId, $activeOnly = false): array
+    public function getGameUserIds(int $gameId, bool $active = null): array
     {
         $query = $this->atlas->select(Player::class)
             ->columns('user_id')
             ->where('game_id = ', $gameId)
             ->orderBy('id');
-        if ($activeOnly) {
-            $query->where('active != ', 0);
+        if ($active !== null) {
+            $query->where('active = ', (int) $active);
         }
         return $query->fetchColumn();
+    }
+
+    /**
+     * @param int $userId
+     * @return GameRecord[]
+     */
+    public function getGamesOfUser(int $userId): array
+    {
+        return $this->atlas->select(Game::class)
+            ->where('creator_id = ', $userId)
+            ->orderBy('id DESC')
+            ->fetchRecords();
+    }
+
+    /**
+     * @param int $userId
+     * @param bool|null $active
+     * @return GameRecord[]
+     */
+    public function getGamesWithUser(int $userId, bool $active = null): array
+    {
+        return $this->atlas->select(Game::class)
+            ->columns('games.*')
+            ->join('INNER JOIN', 'players', 'players.game_id = games.id' . ($active !== null ? (' AND players.active = ' . (int) $active) : ''))
+            ->where('players.user_id = ', $userId)
+            ->orderBy('games.id DESC')
+            ->fetchRecords();
     }
 
     /**
@@ -109,23 +136,39 @@ class GameService
     {
         $gameUserIds = $this->getGameUserIds($gameId);
 
-        /** @var UserRecord[] $users */
-        $users = $this->atlas->select(User::class)
-            ->columns('id, username')
-            ->where('id IN ', $gameUserIds)
-            ->fetchRecords();
+        if (count($gameUserIds) > 0) {
+            /** @var UserRecord[] $users */
+            $users = $this->atlas->select(User::class)
+                ->columns('id, username')
+                ->where('id IN ', $gameUserIds)
+                ->fetchRecords();
 
-        $usersMap = [];
-        foreach ($users as $user) {
-            $usersMap[$user->id] = $user;
-        }
+            $usersMap = [];
+            foreach ($users as $user) {
+                $usersMap[$user->id] = $user;
+            }
 
-        $usersSorted = [];
-        foreach ($gameUserIds as $gameUserId) {
-            $usersSorted[] = $usersMap[$gameUserId];
+            $usersSorted = [];
+            foreach ($gameUserIds as $gameUserId) {
+                $usersSorted[] = $usersMap[$gameUserId];
+            }
+        } else {
+            $usersSorted = [];
         }
 
         return $usersSorted;
+    }
+
+    /**
+     * @param int $gameId
+     * @return int
+     */
+    public function getGameMovesCount(int $gameId): int
+    {
+        return $this->atlas->select(Event::class)
+            ->where('game_id = ', $gameId)
+            ->where('type = ', 'move')
+            ->fetchCount();
     }
 
     /**
@@ -174,7 +217,7 @@ class GameService
         return (bool) $this->atlas->select(Player::class)
             ->where('user_id = ', $userId)
             ->where('game_id = ', $gameId)
-            ->where('active != ', 0)
+            ->where('active = ', 1)
             ->fetchCount();
     }
 

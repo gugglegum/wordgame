@@ -2,15 +2,44 @@
 
 use \App\I18n\Profile;
 
-/** @var bool $isOwnerUser */
+/** @var \App\DataSource\User\UserRecord $loggedUser */
+/** @var \App\DataSource\User\UserRecord $user */
+/** @var \App\DataSource\Game\GameRecord[] $gamesData */
 
 $title = Profile::profile_page_title(['username' => $user->username]);
 $this->layout('layouts/default-layout', [
     'title' => $title,
-])
+]);
+
 ?>
 <h1><?= $this->e($title) ?></h1>
 
+<?php if ($user->id == $loggedUser->id) { ?>
+
+<h2>Создать новую игру</h2>
+
+<p>После создания игры просто отправьте ссылку вашим друзьям, чтобы они могли присоединиться.</p>
 <form action="<?= $this->e($this->urlFromRoute('game.create')) ?>" method="post">
-    <button type="submit">Создать игру</button>
+    <button type="submit" class="btn btn-success">Создать игру</button>
 </form>
+
+<?php if (count($gamesData) > 0) { ?>
+<h2 style="margin-top: 1em"><?= $this->e(Profile::games_you_are_playing_title()) ?></h2>
+<ul class="user-games-list">
+<?php foreach ($gamesData as $gameData) { ?>
+<?php
+    $usersListHtml = [];
+    foreach ($gameData['users'] as $gameUser) {
+        $usersListHtml[] = '<a href="' . $this->urlFromRoute('profile', ['user' => $gameUser->username]) . '">' . $this->e($gameUser->username) . '</a>';
+    }
+?>
+    <li>
+        <div class="game-code"><a href="<?= $this->e($this->urlFromRoute('game.view', ['gameCode' => $gameData['game']->code])) ?>"><?= $this->e($gameData['game']->code) ?></a> (<?= Profile::words_count(['count' => $gameData['movesCount']]) ?>)</div>
+
+        <?= implode(', ', $usersListHtml) ?>
+    </li>
+<?php } ?>
+</ul>
+<?php } ?>
+
+<?php } ?>
